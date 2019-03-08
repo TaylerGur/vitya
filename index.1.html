@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script>
+        var socket = io.connect('https://next-release-api.criptex.com', {
+            path: '/api/v2/socket.io',
+            query: 'uuid=guest-random'
+        });
+
+        // var socket = io.connect('https://alpha-api.criptex.com', {
+        //     path: '/api/v2/socket.io',
+        //     query: 'uuid=guest-random'
+        // });
+
+        socket.on('connection', function(io) {
+            console.log('connect');
+        });
+
+        // socket.emit('change:room', {joinRoom: ['statistics-landing']});
+
+        // socket.on('xchange', function (data) {
+        //     console.log('xchange', data);
+        // });
+
+        socket.on('orderbook_snapshot', function (data) {
+            console.log('orderbook_snapshot', data);
+        });
+
+        // fetch('https://next-release-api.criptex.com/api/v2/trading/order/snapshot?symbol=BTCUSD');
+        fetch('https://next-release-api.criptex.com/api/v2/trading/order/snapshot?symbol=NEOUSD', {
+            method: 'GET',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzc2kiOiI3NWM1ODcyNC1iODUyLTQxMTktOTEzNy1mZWQ2NTM2NTI0NmEiLCJqdGkiOiIxNGQzZDUyYy1iNzk1LTRlZDUtODdhZi00NmYyZjExMzA2MGEiLCJzdWIiOiJiNTM3YWZkNC01ZGI4LTRjNTItOTkyMS0yY2UxMTM5OWIwNjkiLCJwZXJtaXNzaW9ucyI6W10sImlhdCI6MTU1MTk1ODc3NywibmJmIjoxNTUxOTU4Nzc3fQ.ZtP0Iir7dlS9DNcJXfZSQ9r3a10lxySuyAVwG5c9Q_4',
+            }
+        }).then();
+
+    </script>
+</head>
+<body>
+
+    <button onclick="myFunction()">123</button>
+    <script>
+        let status = 1;
+
+        function myFunction() {
+            if(status){
+                status = 0;
+                console.log('0')
+                return socket.emit('change:room', {joinRoom: ['xchange']});
+            }
+            status = 1;
+            console.log('1')
+            return socket.emit('change:room', {leaveRoom: ['xchange']});
+        }
+    </script>
+</body>
+</html>
